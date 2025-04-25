@@ -62,3 +62,8 @@
   margin: 2px 0;  
   padding: 0;
 }
+
+.filter-btn {
+    margin: 10px;
+    cursor: pointer;
+}
