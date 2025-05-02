@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import RestaurantCard from "./RestaurantCard";
 import Shimmer from "./Shimmer";
+import { Link } from "react-router-dom";
 
 const Body = () => {
     const[listOfRestaurents, setListOfRestaurents] = useState([]);
@@ -44,7 +45,6 @@ const Body = () => {
     //     console.log("useEffect Called..!")
     //   }, []);
 
-    console.log("Body rendered")
 
     useEffect(()=>{
         fetchData();
@@ -82,21 +82,23 @@ const Body = () => {
                         //filetr the restaurent card and updates its UI
                             console.log(searchText);
                             const filteredRest = listOfRestaurents.filter((res)=> res.info.name.toLowerCase().includes(searchText.toLowerCase()));
-                            setListOfRestaurents(filteredRest);
+                            // setListOfRestaurents(filteredRest);
+                            setFilteredRestaurent(filteredRest)
                     }}>Search</button>
 
                 </div>
                 <button className="filter-btn" onClick={() => {
                     const filteredList = listOfRestaurents.filter(
                     (res) => res.info.avgRating > 4); 
-                    setListOfRestaurents(filteredList);
+                    // setListOfRestaurents(filteredList);
+                    setFilteredRestaurent(filteredList)
                     }}>
                         Top Rated Restaurents
                 </button>
             </div>
             <div className="res-container">
                 {filteredRestaurent.map((restaurent) => (
-                    <RestaurantCard key={restaurent.info.id} resData={restaurent} />
+                    <Link key={restaurent.info.id} to= {"/menu/"+restaurent.info.id}><RestaurantCard resData={restaurent} /></Link>
                 ))}
 
                 {/* <RestaurantCard resName="KFC" cuisine="Pizza" stars="4.5 *" deliveryTime="20 min"/>

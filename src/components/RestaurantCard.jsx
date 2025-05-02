@@ -7,7 +7,7 @@ console.log(resData)
         cuisines,
         costForTwo,
         cloudinaryImageId,
-        deliveryTime,
+        sla,
     } = resData?.info;
     return(
         <div className="res-card">
@@ -16,7 +16,7 @@ console.log(resData)
             <h5>{cuisines}</h5>
             <h5>{avgRating}</h5>
             <h5>{costForTwo}</h5>
-            <h5>{deliveryTime} minutes</h5>
+            <h5>{sla.slaString}</h5>
 
         </div>
     )
