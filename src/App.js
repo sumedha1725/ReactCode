@@ -1,4 +1,4 @@
-import React from "react";
+import React, { lazy } from "react";
 import ReactDOM from "react-dom/client"
 import Header from "./components/Header";
 import Body from "./components/Body";
@@ -8,7 +8,10 @@ import Contact from "./components/contact";
 import Cart from "./components/Cart";
 import Menu from "./components/Menu";
 import Error from "./components/Error";
+// import Grocery from "./components/Grocery";
 
+
+const Grocery = lazy(()=> import("./components/Grocery"));
 
 const AppLayout = () => {
     return (
@@ -61,6 +64,10 @@ const appRouter = createBrowserRouter([
                 {
                     path : "/cart",
                     element: <Cart />,
+                },
+                {
+                    path : "/grocery",
+                    element: <Grocery />,
                 },
                 {
                     path : "/menu/:resId",
