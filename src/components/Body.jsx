@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import RestaurantCard from "./RestaurantCard";
+import RestaurantCard, {withOpenLabel} from "./RestaurantCard";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
 import useOnlineStatus from "../utils/useOnlineStatus";
@@ -10,6 +10,8 @@ const Body = () => {
 
 
     const[searchText, setSearchText] = useState("");
+
+    const RestaurentCardOpen = withOpenLabel(RestaurantCard);
 
     //     {
     //       data: {
@@ -45,7 +47,7 @@ const Body = () => {
     //   useEffect(()=>{
     //     console.log("useEffect Called..!")
     //   }, []);
-
+    console.log(listOfRestaurents);
 
     useEffect(()=>{
         fetchData();
@@ -80,13 +82,14 @@ const Body = () => {
 
     return listOfRestaurents.length === 0? <Shimmer /> : (
         <div className="body">
-            <div className="filter">
-                <div className="search">
-                    <input type="text" className="search-box" value={searchText}
+            <div className="filter flex m-[8] ">
+                <div className="search m-[10px] p-[10px]">
+                    <input type="text" className="border border-solid border-red" value={searchText}
                     onChange={(e) => {
                         setSearchText(e.target.value);
                     }}/>
-                    <button onClick={()=> {
+                    <button  className= "px-[8px] bg-green-100 m-[8]"
+                    onClick={()=> {
                         //filetr the restaurent card and updates its UI
                             console.log(searchText);
                             const filteredRest = listOfRestaurents.filter((res)=> res.info.name.toLowerCase().includes(searchText.toLowerCase()));
@@ -95,7 +98,8 @@ const Body = () => {
                     }}>Search</button>
 
                 </div>
-                <button className="filter-btn" onClick={() => {
+                <button className="px-[10px] m-[30px] bg-pink-500 rounded-lg" 
+                onClick={() => {
                     const filteredList = listOfRestaurents.filter(
                     (res) => res.info.avgRating > 4); 
                     // setListOfRestaurents(filteredList);
@@ -104,9 +108,15 @@ const Body = () => {
                         Top Rated Restaurents
                 </button>
             </div>
-            <div className="res-container">
+            <div className="res-container flex justify-between flex-wrap">
                 {filteredRestaurent.map((restaurent) => (
-                    <Link key={restaurent.info.id} to= {"/menu/"+restaurent.info.id}><RestaurantCard resData={restaurent} /></Link>
+                    <Link key={restaurent?.info?.id} to= {"/menu/"+restaurent.info.id}>
+
+                       {restaurent?.info?.isOpen ? (<RestaurentCardOpen resData={restaurent}/> ): (<RestaurantCard resData={restaurent} />)
+                        }
+                    </Link>
+                        
+                        
                 ))}
 
                 {/* <RestaurantCard resName="KFC" cuisine="Pizza" stars="4.5 *" deliveryTime="20 min"/>
