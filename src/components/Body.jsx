@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import RestaurantCard, {withOpenLabel} from "./RestaurantCard";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
 import useOnlineStatus from "../utils/useOnlineStatus";
+import UserContext from "../utils/UserContext";
 
 const Body = () => {
     const[listOfRestaurents, setListOfRestaurents] = useState([]);
@@ -47,7 +48,7 @@ const Body = () => {
     //   useEffect(()=>{
     //     console.log("useEffect Called..!")
     //   }, []);
-    console.log(listOfRestaurents);
+    // console.log(listOfRestaurents);
 
     useEffect(()=>{
         fetchData();
@@ -59,7 +60,7 @@ const Body = () => {
         );
 
         const json = await data.json();
-        console.log(json);
+        // console.log(json);
         // optional chaining
         setListOfRestaurents(json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants)
         setFilteredRestaurent(json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants)
@@ -80,15 +81,19 @@ const Body = () => {
 
     //using ternary operator
 
+    const {loggedInUser,setUserName} = useContext(UserContext);
+
+
+
     return listOfRestaurents.length === 0? <Shimmer /> : (
         <div className="body">
             <div className="filter flex m-[8] ">
-                <div className="search m-[10px] p-[10px]">
+                <div className="search m-[10px] p-[10px]flex items-center">
                     <input type="text" className="border border-solid border-red" value={searchText}
                     onChange={(e) => {
                         setSearchText(e.target.value);
                     }}/>
-                    <button  className= "px-[8px] bg-green-100 m-[8]"
+                    <button  className= "px-[8px] bg-green-100 m-[2px] ml-[5px]"
                     onClick={()=> {
                         //filetr the restaurent card and updates its UI
                             console.log(searchText);
@@ -96,9 +101,19 @@ const Body = () => {
                             // setListOfRestaurents(filteredRest);
                             setFilteredRestaurent(filteredRest)
                     }}>Search</button>
-
                 </div>
-                <button className="px-[10px] m-[30px] bg-pink-500 rounded-lg" 
+                {/* <div className="search m-4 p-4 flex item-center"></div> */}
+                
+                <div className="search m-[10px] flex items-center">
+                    <label>UserName:</label>
+                
+                <input className="border p-[5px] h-[10px] flex" 
+                value={loggedInUser}
+                onChange={(event)=> setUserName(event.target.value)}/>
+                </div>
+
+
+                {/* <button className="px-[10px] m-[30px] bg-pink-500 rounded-lg" 
                 onClick={() => {
                     const filteredList = listOfRestaurents.filter(
                     (res) => res.info.avgRating > 4); 
@@ -106,7 +121,7 @@ const Body = () => {
                     setFilteredRestaurent(filteredList)
                     }}>
                         Top Rated Restaurents
-                </button>
+                </button> */}
             </div>
             <div className="res-container flex justify-between flex-wrap">
                 {filteredRestaurent.map((restaurent) => (
